@@ -8,6 +8,7 @@ public class Main {
         Servidor s = new Servidor();
         s.start();
         c.start();
+        System.out.println("xddd");
     }
 
 }
