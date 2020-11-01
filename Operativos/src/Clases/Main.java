@@ -6,6 +6,7 @@ public class Main {
     //Holisjuasjuas
     //Henrygei
         //Supapapa xddxdxdxd
+        
     Cliente c = new Cliente();
     Servidor s = new Servidor();
 	s.start();
