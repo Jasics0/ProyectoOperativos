@@ -8,7 +8,9 @@ public class Main {
         Servidor s = new Servidor();
         s.start();
         c.start();
+        System.out.println("Holabrositoxdxd");
         System.out.println("xddd");
+
     }
 
 }
