@@ -112,7 +112,7 @@ public class Servidor {
         return administrador;
     }
 
-    public static String sacarCPU() throws IOException {
+    public String sacarCPU() throws IOException {
         String salida = "";
 
         ProcessBuilder b = new ProcessBuilder().command(("ps aux --sort pmem").split(" "));
@@ -244,10 +244,6 @@ public class Servidor {
             e.printStackTrace();
             return "Error.";
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        System.out.println(sacarCPU());
     }
 
 }
