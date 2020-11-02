@@ -1,9 +1,6 @@
 package Clases;
-
-import javax.print.attribute.standard.JobImpressionsSupported;
 import javax.swing.*;
 import java.net.SocketException;
-import java.util.Scanner;
 
 public class MainCliente {
 

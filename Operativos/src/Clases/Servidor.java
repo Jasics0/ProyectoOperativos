@@ -23,7 +23,7 @@ public class Servidor{
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE = sacarPorcentajeMemoria();
+                mensajeE = sacarPorcentajeDf("sda");
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
                 Thread.sleep(1000);
