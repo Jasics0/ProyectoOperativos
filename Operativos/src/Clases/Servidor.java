@@ -23,7 +23,7 @@ public class Servidor {
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE = "Disco usado:" + sacarPorcentajeDf("sda") + " | Memoria Disponible:" + sacarPorcentajeMf("Mem") + "\n\n";
+                mensajeE = "Disco usado:" + sacarPorcentajeDf("sda") + " | Memoria Disponible:" + sacarPorcentajeMf("Mem") +" | CPU: "+sacarCPU()+ "\n\n";
                 mensajeE += sacarProcesos();
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
@@ -112,6 +112,55 @@ public class Servidor {
         return administrador;
     }
 
+    public static String sacarCPU() throws IOException {
+        String salida = "";
+
+        ProcessBuilder b = new ProcessBuilder().command(("ps aux --sort pmem").split(" "));
+        Process p = b.start();
+        BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String linea = "";
+        double cpu = 0;
+        String cupS="";
+        int i = 0, i2 = 0;
+        entrada.readLine();
+        while ((salida = entrada.readLine()) != null) {
+            while (i < salida.length()) {
+                i2++;
+                while (salida.charAt(i) != ' ') {
+                    if (i2 == 3) {
+                        cupS += salida.charAt(i);
+                    }
+
+                    if (i==(salida.length()-1)){
+                        break;
+                    }
+                    i++;
+                }
+
+                if (i==(salida.length()-1) || i2==3){
+                    break;
+                }
+
+
+                while (salida.charAt(i) == ' ') {
+                    if (i==(salida.length()-1) || i2==3){
+                        break;
+                    }
+                    i++;
+
+                }
+
+            }
+            if (!"0.0".equals(cupS)) {
+                cpu += Double.parseDouble(cupS);
+
+            }
+            i = i2 = 0;
+            cupS="";
+        }
+        return cpu+"";
+    }
+
     public int pid() {
         String id = ManagementFactory.getRuntimeMXBean().getName();
         String[] ids = id.split("@");
@@ -197,5 +246,8 @@ public class Servidor {
         }
     }
 
+    public static void main(String[] args) throws IOException {
+        System.out.println(sacarCPU());
+    }
 
 }
