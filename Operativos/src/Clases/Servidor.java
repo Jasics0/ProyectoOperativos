@@ -1,6 +1,5 @@
 package Clases;
 
-import java.awt.geom.Arc2D;
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.net.*;
@@ -24,7 +23,8 @@ public class Servidor {
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE = "Disco usado:"+sacarPorcentajeDf("sda")+" | Memoria Disponible:"+sacarPorcentajeMf("Mem");
+                mensajeE = "Disco usado:" + sacarPorcentajeDf("sda") + " | Memoria Disponible:" + sacarPorcentajeMf("Mem") + "\n\n";
+                mensajeE += sacarProcesos();
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
                 Thread.sleep(1000);
@@ -64,45 +64,55 @@ public class Servidor {
         return gateWay;
     }
 
-    public String sacarPorcentajeMemoria() throws IOException {
+    public  String sacarProcesos() throws IOException {
         String salida = "";
 
         ProcessBuilder b = new ProcessBuilder().command(("ps aux --sort pmem").split(" "));
         Process p = b.start();
         BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String linea = "";
+        String administrador = "";
+        int i = 0, i2 = 0;
         while ((salida = entrada.readLine()) != null) {
-            if (salida.contains(pid() + "")) {
-                linea = salida;
-                break;
-            }
-        }
-        int i = 0;
-        int i2 = 0;
-        String porcentaje = "";
-        while (i < 3) {
-            if (linea.charAt(i2) != ' ') {
-                while (linea.charAt(i2) != ' ') {
-                    i2++;
-                }
-                i++;
-            }
-            i2++;
-            if (i == 3) {
-                while (linea.charAt(i2) == ' ') {
-                    i2++;
-                }
-            }
-        }
+            while (i < salida.length()) {
+                i2++;
+                while (salida.charAt(i) != ' ') {
+                    if (i2 <= 4 || i2 == 11) {
+                        administrador += salida.charAt(i);
+                    }
 
-        while (linea.charAt(i2) != ' ') {
-            porcentaje += linea.charAt(i2);
-            i2++;
+                    if (i==(salida.length()-1)){
+                        break;
+                    }
+                    i++;
+                }
+
+                if (i==(salida.length()-1)){
+                    break;
+                }
+
+
+                while (salida.charAt(i) == ' ') {
+                    if (i==(salida.length()-1)){
+                        break;
+                    }
+                    if (i2 <= 4) {
+                        administrador += salida.charAt(i);
+                    }
+                    i++;
+
+                }
+
+            }
+            administrador += "\n";
+            linea += salida + "\n";
+
+            i = i2 = 0;
         }
-        return porcentaje + "%";
+        return administrador;
     }
 
-    public static int pid() {
+    public int pid() {
         String id = ManagementFactory.getRuntimeMXBean().getName();
         String[] ids = id.split("@");
         return Integer.parseInt(ids[0]);
@@ -135,7 +145,7 @@ public class Servidor {
                 porcentaje += salida.charAt(j);
             }
 
-            return porcentaje+"%";
+            return porcentaje + "%";
         } catch (IOException e) {
             e.printStackTrace();
             return "Error.";
@@ -143,7 +153,7 @@ public class Servidor {
     }
 
 
-    public static String sacarPorcentajeMf(String palabra) {
+    public String sacarPorcentajeMf(String palabra) {
         String salida = "";
         try {
             ProcessBuilder b = new ProcessBuilder().command("free -m".split(" "));
@@ -155,9 +165,9 @@ public class Servidor {
                 }
             }
 
-            int i = 0,i2=0;
+            int i = 0, i2 = 0;
             String porcentaje = "";
-            String aux []= new String[2];
+            String aux[] = new String[2];
             while (salida.charAt(i) != ' ') {
                 i++;
             }
@@ -168,27 +178,24 @@ public class Servidor {
                     i++;
                 }
                 i2++;
-                aux[i2-1]="";
+                aux[i2 - 1] = "";
                 while (salida.charAt(i) != ' ') {
-                    aux[i2-1] += salida.charAt(i);
+                    aux[i2 - 1] += salida.charAt(i);
                     i++;
                 }
-                if (i2==2){
+                if (i2 == 2) {
                     break;
                 }
 
             }
-            Double libre= Double.parseDouble(aux[0])-Double.parseDouble(aux[1]);
-            porcentaje=(Math.round((libre*100)/Double.parseDouble(aux[0])))+"";
-            return porcentaje+"%";
+            Double libre = Double.parseDouble(aux[0]) - Double.parseDouble(aux[1]);
+            porcentaje = (Math.round((libre * 100) / Double.parseDouble(aux[0]))) + "";
+            return porcentaje + "%";
         } catch (IOException e) {
             e.printStackTrace();
             return "Error.";
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(sacarPorcentajeMf("Mem"));
-    }
 
 }
