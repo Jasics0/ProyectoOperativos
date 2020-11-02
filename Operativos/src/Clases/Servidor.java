@@ -5,9 +5,35 @@ import java.lang.management.ManagementFactory;
 import java.net.*;
 import java.util.Enumeration;
 
-public class Servidor extends Thread {
+public class Servidor{
 
-    public static InetAddress obtenerIp() throws UnknownHostException, SocketException {
+    public Servidor(){
+        ServerSocket sServer;
+        try {
+            System.out.println("Servidor# Creando el socket en el puerto 2010...");
+            sServer = new ServerSocket(2010);
+            System.out.println("Servidor# Esperando conexiones...");
+            Socket sConexion = sServer.accept();
+            System.out.println("Servidor# Se conectó un cliente " + sConexion.getInetAddress());
+            String mensaje;
+            String mensajeE = "";
+            DataInputStream entrada;
+            DataOutputStream salida;
+//            do {
+//                entrada = new DataInputStream(sConexion.getInputStream());
+//                mensaje = entrada.readUTF();
+//                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
+//                Thread.sleep(1000);
+//                mensajeE = sacarPorcentajeMemoria();
+//                salida = new DataOutputStream(sConexion.getOutputStream());
+//                salida.writeUTF(mensajeE);
+//            } while (true);
+        } catch (IOException /*| InterruptedException*/ e) {
+            e.printStackTrace();
+        }
+    }
+
+     private InetAddress obtenerIp() throws UnknownHostException, SocketException {
         Enumeration e = NetworkInterface.getNetworkInterfaces();
         InetAddress i = null;
         while (e.hasMoreElements()) {
@@ -29,7 +55,7 @@ public class Servidor extends Thread {
     }
 
 
-    private static String puertaDeEnlace() throws IOException {
+    private  String puertaDeEnlace() throws IOException {
         ProcessBuilder b = new ProcessBuilder().command(("hostname -I").split(" "));
         Process p = b.start();
         BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -75,41 +101,12 @@ public class Servidor extends Thread {
         return porcentaje + "%";
     }
 
-    public void run() {
-        ServerSocket sServer;
-        try {
-            System.out.println("Servidor# Creando el socket en el puerto 2010...");
-            sServer = new ServerSocket(2010);
-            System.out.println("Servidor# Esperando conexiones...");
-            Socket sConexion = sServer.accept();
-            System.out.println("Servidor# Se conectó un cliente " + sConexion.getInetAddress());
-            String mensaje;
-            String mensajeE = "";
-            DataInputStream entrada;
-            DataOutputStream salida;
-            do {
-                entrada = new DataInputStream(sConexion.getInputStream());
-                mensaje = entrada.readUTF();
-                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                Thread.sleep(1000);
-                mensajeE = sacarPorcentajeMemoria();
-                salida = new DataOutputStream(sConexion.getOutputStream());
-                salida.writeUTF(mensajeE);
-            } while (true);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static int pid() {
         String id = ManagementFactory.getRuntimeMXBean().getName();
         String[] ids = id.split("@");
         return Integer.parseInt(ids[0]);
     }
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(obtenerIp().getHostAddress());
-    }
 
 
 }
