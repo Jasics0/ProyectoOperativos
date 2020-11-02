@@ -4,13 +4,40 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
-import java.util.Objects;
 
-public class Cliente extends Thread {
+
+public class Cliente {
     private static final String DEFAULT_GATEWAY = "Default Gateway";
 
+    public Cliente() {
+        Servidor s = new Servidor();
+        Socket cCliente;
+        int puerto = 5000;
+        try {
+            Thread.sleep(1000);
+            cCliente = new Socket();
+            System.out.println("Cliente# Estableciendo conexión con el servidor");
+            cCliente = new Socket(InetAddress.getByName("192.168.0.118"), puerto);
+            System.out.println("Cliente# Conexión establecida con el servidor :D");
+//            DataOutputStream salida;
+//            DataInputStream entrada;
+//            String mensaje = sacarPorcentajeDf("sda");
+//            String mensajeS = "";
+//            do {
+//                salida = new DataOutputStream(cCliente.getOutputStream());
+//                salida.writeUTF(mensaje);
+//                entrada = new DataInputStream(cCliente.getInputStream());
+//                mensajeS = entrada.readUTF();
+//                System.out.println("Cliente# Porcentaje de memoria de este proceso: " + mensajeS);
+//                Thread.sleep(1000);
+//
+//            } while (true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-    public static InetAddress obtenerIp() throws UnknownHostException, SocketException {
+    public InetAddress obtenerIp() throws SocketException {
         Enumeration e = NetworkInterface.getNetworkInterfaces();
         InetAddress i = null;
         while (e.hasMoreElements()) {
@@ -61,7 +88,7 @@ public class Cliente extends Thread {
         }
     }
 
-    public static String puertaEnlace() {
+    public String puertaEnlace() {
         if (Desktop.isDesktopSupported()) {
             try {
                 Process process = Runtime.getRuntime().exec("ipconfig");
@@ -70,9 +97,8 @@ public class Cliente extends Thread {
                     while ((line = bufferedReader.readLine()) != null) {
                         if (line.trim().startsWith(DEFAULT_GATEWAY)) {
                             String ipAddress = line.substring(line.indexOf(":") + 1).trim(), routerURL = String.format("http://%s", ipAddress); // opening router setup in browser Desktop.getDesktop().browse(new URI(routerURL)); } System.out.println(line); } } } catch (Exception e) { e.printStackTrace(); } } } }
-                            String s = ipAddress;
-                            if (!s.equals("")) {
-                                return s;
+                            if (!ipAddress.equals("")) {
+                                return ipAddress;
                             }
                         }
                     }
@@ -86,38 +112,4 @@ public class Cliente extends Thread {
         return null;
     }
 
-    public void run() {
-        Socket cCliente;
-        int puerto = 2010;
-        try {
-            Thread.sleep(1000);
-            cCliente = new Socket();
-            System.out.println("Cliente# Estableciendo conexión con el servidor");
-            cCliente = new Socket(obtenerIp(), puerto);
-            System.out.println("Cliente# Conexión establecida con el servidor :D");
-            DataOutputStream salida;
-            DataInputStream entrada;
-            String mensaje = sacarPorcentajeDf("sda");
-            String mensajeS = "";
-            do {
-                salida = new DataOutputStream(cCliente.getOutputStream());
-                salida.writeUTF(mensaje);
-                entrada = new DataInputStream(cCliente.getInputStream());
-                mensajeS = entrada.readUTF();
-                System.out.println("Cliente# Porcentaje de memoria de este proceso: " + mensajeS);
-                Thread.sleep(1000);
-
-            } while (true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            System.out.println(obtenerIp().getHostAddress());
-        } catch (Exception e) {
-            System.out.println("ERROR XDDXD");
-        }
-    }
 }

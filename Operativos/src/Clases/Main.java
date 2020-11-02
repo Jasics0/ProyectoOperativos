@@ -1,12 +1,12 @@
 package Clases;
 
+import java.net.SocketException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SocketException {
         Cliente c = new Cliente();
-        Servidor s = new Servidor();
-        s.start();
-        c.start();
     }
 
 }
+
