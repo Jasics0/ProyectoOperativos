@@ -7,7 +7,7 @@ import java.lang.management.ManagementFactory;
 
 public class Servidor extends Thread {
 
-	private InetAddress obtenerIp() throws UnknownHostException, SocketException {
+	public static InetAddress obtenerIp() throws UnknownHostException, SocketException {
 		Enumeration e = NetworkInterface.getNetworkInterfaces();
 		InetAddress i =null;
 		while (e.hasMoreElements()) {
@@ -82,10 +82,8 @@ public class Servidor extends Thread {
 				salida = new DataOutputStream(sConexion.getOutputStream());
 				salida.writeUTF(mensajeE);
 			} while (true);
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
-		} catch (InterruptedException a) {
-			a.printStackTrace();
 		}
 	}
 
@@ -94,7 +92,7 @@ public class Servidor extends Thread {
 		String[] ids = id.split("@");
 		return Integer.parseInt(ids[0]);
 	}
-	public static void main(String[] args) {
-
+	public static void main(String[] args) throws SocketException, UnknownHostException {
+		System.out.println(obtenerIp().getHostAddress());
 	}
 }
