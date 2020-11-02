@@ -1,39 +1,42 @@
 package Clases;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.net.*;
 import java.util.Enumeration;
 
-public class Servidor{
+public class Servidor {
 
-    public Servidor(){
+    public Servidor(int port) {
         ServerSocket sServer;
         try {
             System.out.println("Servidor# Creando el socket en el puerto 2010...");
-            sServer = new ServerSocket(2010);
+            sServer = new ServerSocket(port);
             System.out.println("Servidor# Esperando conexiones...");
             Socket sConexion = sServer.accept();
             System.out.println("Servidor# Se conectó un cliente " + sConexion.getInetAddress());
             String mensaje;
             String mensajeE = "";
-            DataInputStream entrada;
+//            DataInputStream entrada;
             DataOutputStream salida;
-//            do {
+            do {
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-//                Thread.sleep(1000);
-//                mensajeE = sacarPorcentajeMemoria();
-//                salida = new DataOutputStream(sConexion.getOutputStream());
-//                salida.writeUTF(mensajeE);
-//            } while (true);
-        } catch (IOException /*| InterruptedException*/ e) {
+                mensajeE = sacarPorcentajeMemoria();
+                salida = new DataOutputStream(sConexion.getOutputStream());
+                salida.writeUTF(mensajeE);
+                Thread.sleep(1000);
+            } while (true);
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-     private InetAddress obtenerIp() throws UnknownHostException, SocketException {
+    private InetAddress obtenerIp() throws UnknownHostException, SocketException {
         Enumeration e = NetworkInterface.getNetworkInterfaces();
         InetAddress i = null;
         while (e.hasMoreElements()) {
@@ -47,7 +50,7 @@ public class Servidor{
                 if (puertaDeEnlace().contains(i.getHostAddress())) {
                     break;
                 }
-            } catch (Exception a){
+            } catch (Exception a) {
 
             }
         }
@@ -55,7 +58,7 @@ public class Servidor{
     }
 
 
-    private  String puertaDeEnlace() throws IOException {
+    private String puertaDeEnlace() throws IOException {
         ProcessBuilder b = new ProcessBuilder().command(("hostname -I").split(" "));
         Process p = b.start();
         BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -107,6 +110,38 @@ public class Servidor{
         return Integer.parseInt(ids[0]);
     }
 
+    public String sacarPorcentajeDf(String palabra) {
+        String salida = "";
+        try {
+            ProcessBuilder b = new ProcessBuilder().command("df".split(" "));
+            Process p = b.start();
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((salida = entrada.readLine()) != null) {
+                if (salida.contains(palabra)) {
+                    break;
+                }
+            }
 
+            int i = 0;
+
+            while (salida.charAt(i) != '%') {
+                i++;
+            }
+            String porcentaje = "";
+            int i2 = i;
+
+            while (salida.charAt(i2) != ' ') {
+                i2--;
+            }
+            for (int j = i2; j < (i + 1); j++) {
+                porcentaje += salida.charAt(j);
+            }
+
+            return porcentaje;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error.";
+        }
+    }
 
 }

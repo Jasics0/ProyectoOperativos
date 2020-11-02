@@ -1,8 +1,13 @@
 package Clases;
 
 import java.awt.*;
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.Enumeration;
 
 
@@ -19,18 +24,16 @@ public class Cliente {
             cCliente = new Socket(InetAddress.getByName("192.168.0.119"), puerto);
             System.out.println("Cliente# Conexión establecida con el servidor :D");
 //            DataOutputStream salida;
-//            DataInputStream entrada;
-//            String mensaje = sacarPorcentajeDf("sda");
+            DataInputStream entrada;
+            String mensaje = "";
 //            String mensajeS = "";
-//            do {
-//                salida = new DataOutputStream(cCliente.getOutputStream());
-//                salida.writeUTF(mensaje);
-//                entrada = new DataInputStream(cCliente.getInputStream());
-//                mensajeS = entrada.readUTF();
-//                System.out.println("Cliente# Porcentaje de memoria de este proceso: " + mensajeS);
-//                Thread.sleep(1000);
-//
-//            } while (true);
+            do {
+                entrada = new DataInputStream(cCliente.getInputStream());
+                mensaje = entrada.readUTF();
+                System.out.println("Cliente# Porcentaje de memoria de este proceso: " + mensaje);
+                Thread.sleep(1000);
+
+            } while (true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,39 +56,6 @@ public class Cliente {
         return i;
     }
 
-    public String sacarPorcentajeDf(String palabra) {
-        String salida = "";
-        try {
-            ProcessBuilder b = new ProcessBuilder().command("df".split(" "));
-            Process p = b.start();
-            BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((salida = entrada.readLine()) != null) {
-                if (salida.contains(palabra)) {
-                    break;
-                }
-            }
-
-            int i = 0;
-
-            while (salida.charAt(i) != '%') {
-                i++;
-            }
-            String porcentaje = "";
-            int i2 = i;
-
-            while (salida.charAt(i2) != ' ') {
-                i2--;
-            }
-            for (int j = i2; j < (i + 1); j++) {
-                porcentaje += salida.charAt(j);
-            }
-
-            return porcentaje;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "Error.";
-        }
-    }
 
     public String puertaEnlace() {
         if (Desktop.isDesktopSupported()) {
