@@ -4,8 +4,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
-
-import javax.swing.JOptionPane;
+import java.util.Objects;
 
 public class Cliente extends Thread {
     private static final String DEFAULT_GATEWAY = "Default Gateway";
@@ -19,8 +18,8 @@ public class Cliente extends Thread {
             Enumeration ee = n.getInetAddresses();
             while (ee.hasMoreElements()) {
                 i = (InetAddress) ee.nextElement();
-                if (i.getHostAddress().contains("192.168")) {
-                    break;
+                if (i.getHostAddress().contains(Objects.requireNonNull(puertaEnlace()))) {
+                    return i;
                 }
             }
 
@@ -116,8 +115,7 @@ public class Cliente extends Thread {
 
     public static void main(String[] args) {
         try {
-            System.out.println(puertaEnlace());
-
+            System.out.println(obtenerIp().getHostAddress());
         } catch (Exception e) {
             System.out.println("ERROR XDDXD");
         }
