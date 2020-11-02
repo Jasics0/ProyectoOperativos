@@ -10,14 +10,13 @@ public class Cliente {
     private static final String DEFAULT_GATEWAY = "Default Gateway";
 
     public Cliente() {
-        Servidor s = new Servidor();
         Socket cCliente;
-        int puerto = 5000;
+        int puerto = 2010;
         try {
             Thread.sleep(1000);
             cCliente = new Socket();
             System.out.println("Cliente# Estableciendo conexión con el servidor");
-            cCliente = new Socket(InetAddress.getByName("192.168.0.118"), puerto);
+            cCliente = new Socket(InetAddress.getByName("192.168.0.119"), puerto);
             System.out.println("Cliente# Conexión establecida con el servidor :D");
 //            DataOutputStream salida;
 //            DataInputStream entrada;
