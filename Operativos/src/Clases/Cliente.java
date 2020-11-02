@@ -29,7 +29,7 @@ public class Cliente {
             do {
                 entrada = new DataInputStream(cCliente.getInputStream());
                 mensaje = entrada.readUTF();
-                System.out.println("Cliente# Porcentaje de uso de disco: " + mensaje);
+                System.out.println("Cliente# " + mensaje);
                 Thread.sleep(1000);
 
             } while (true);

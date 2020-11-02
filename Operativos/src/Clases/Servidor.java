@@ -1,16 +1,17 @@
 package Clases;
 
+import java.awt.geom.Arc2D;
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.net.*;
 import java.util.Enumeration;
 
-public class Servidor{
+public class Servidor {
 
-    public Servidor(int port){
+    public Servidor(int port) {
         ServerSocket sServer;
         try {
-            System.out.println("Servidor# Creando el socket en el puerto 2010...");
+            System.out.println("Servidor# Creando el socket en el puerto " + port + "...");
             sServer = new ServerSocket(port);
             System.out.println("Servidor# Esperando conexiones...");
             Socket sConexion = sServer.accept();
@@ -23,7 +24,7 @@ public class Servidor{
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE = sacarPorcentajeDf("sda");
+                mensajeE = "Disco usado:"+sacarPorcentajeDf("sda")+" | Memoria Disponible:"+sacarPorcentajeMf("Mem");
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
                 Thread.sleep(1000);
@@ -47,7 +48,7 @@ public class Servidor{
                 if (puertaDeEnlace().contains(i.getHostAddress())) {
                     break;
                 }
-            } catch (Exception a){
+            } catch (Exception a) {
 
             }
         }
@@ -134,11 +135,60 @@ public class Servidor{
                 porcentaje += salida.charAt(j);
             }
 
-            return porcentaje;
+            return porcentaje+"%";
         } catch (IOException e) {
             e.printStackTrace();
             return "Error.";
         }
+    }
+
+
+    public static String sacarPorcentajeMf(String palabra) {
+        String salida = "";
+        try {
+            ProcessBuilder b = new ProcessBuilder().command("free -m".split(" "));
+            Process p = b.start();
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((salida = entrada.readLine()) != null) {
+                if (salida.contains(palabra)) {
+                    break;
+                }
+            }
+
+            int i = 0,i2=0;
+            String porcentaje = "";
+            String aux []= new String[2];
+            while (salida.charAt(i) != ' ') {
+                i++;
+            }
+
+            while (i < salida.length()) {
+
+                while (salida.charAt(i) == ' ') {
+                    i++;
+                }
+                i2++;
+                aux[i2-1]="";
+                while (salida.charAt(i) != ' ') {
+                    aux[i2-1] += salida.charAt(i);
+                    i++;
+                }
+                if (i2==2){
+                    break;
+                }
+
+            }
+            Double libre= Double.parseDouble(aux[0])-Double.parseDouble(aux[1]);
+            porcentaje=(Math.round((libre*100)/Double.parseDouble(aux[0])))+"";
+            return porcentaje+"%";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error.";
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(sacarPorcentajeMf("Mem"));
     }
 
 }
