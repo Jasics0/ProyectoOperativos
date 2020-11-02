@@ -194,7 +194,7 @@ public class Servidor {
                 porcentaje += salida.charAt(j);
             }
 
-            return porcentaje + "%";
+            return porcentaje;
         } catch (IOException e) {
             e.printStackTrace();
             return "Error.";
