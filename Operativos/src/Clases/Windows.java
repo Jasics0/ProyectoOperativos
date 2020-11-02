@@ -11,7 +11,7 @@ public final class Windows {
     private Windows() {
     }
 
-    public static void main(String[] args) {
+    public static String puertaEnlace() {
         if (Desktop.isDesktopSupported()) {
             try {
                 Process process = Runtime.getRuntime().exec("ipconfig");
@@ -20,14 +20,24 @@ public final class Windows {
                     while ((line = bufferedReader.readLine()) != null) {
                         if (line.trim().startsWith(DEFAULT_GATEWAY)) {
                             String ipAddress = line.substring(line.indexOf(":") + 1).trim(), routerURL = String.format("http://%s", ipAddress); // opening router setup in browser Desktop.getDesktop().browse(new URI(routerURL)); } System.out.println(line); } } } catch (Exception e) { e.printStackTrace(); } } } }
+                            String s = ipAddress;
+                            if (!s.equals("")) {
+                                return s;
+                            }
                         }
                     }
                 } catch (Exception e) {
 
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+
             }
         }
+        return null;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(puertaEnlace());
     }
 }
