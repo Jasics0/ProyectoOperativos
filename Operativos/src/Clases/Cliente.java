@@ -8,11 +8,6 @@ import javax.swing.JOptionPane;
 
 public class Cliente extends Thread {
 
-    public void puertaEnlace(InetAddress i){
-        InetAddress i = null;
-        Enumeration e = NetworkInterface.getNetworkInterfaces();
-
-    }
 
     public static InetAddress obtenerIp() throws UnknownHostException, SocketException {
         Enumeration e = NetworkInterface.getNetworkInterfaces();
