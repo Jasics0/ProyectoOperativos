@@ -14,14 +14,13 @@ import java.util.Enumeration;
 public class Cliente {
     private static final String DEFAULT_GATEWAY = "Default Gateway";
 
-    public Cliente() {
+    public Cliente(String ip, int port) {
         Socket cCliente;
-        int puerto = 2010;
         try {
             Thread.sleep(1000);
             cCliente = new Socket();
             System.out.println("Cliente# Estableciendo conexión con el servidor");
-            cCliente = new Socket(InetAddress.getByName("192.168.0.119"), puerto);
+            cCliente = new Socket(InetAddress.getByName(ip), port);
             System.out.println("Cliente# Conexión establecida con el servidor :D");
 //            DataOutputStream salida;
             DataInputStream entrada;

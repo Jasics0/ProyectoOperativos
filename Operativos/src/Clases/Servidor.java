@@ -1,16 +1,13 @@
 package Clases;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.net.*;
 import java.util.Enumeration;
 
-public class Servidor {
+public class Servidor{
 
-    public Servidor(int port) {
+    public Servidor(int port){
         ServerSocket sServer;
         try {
             System.out.println("Servidor# Creando el socket en el puerto 2010...");
@@ -20,7 +17,7 @@ public class Servidor {
             System.out.println("Servidor# Se conectó un cliente " + sConexion.getInetAddress());
             String mensaje;
             String mensajeE = "";
-//            DataInputStream entrada;
+            DataInputStream entrada;
             DataOutputStream salida;
             do {
 //                entrada = new DataInputStream(sConexion.getInputStream());
@@ -50,7 +47,7 @@ public class Servidor {
                 if (puertaDeEnlace().contains(i.getHostAddress())) {
                     break;
                 }
-            } catch (Exception a) {
+            } catch (Exception a){
 
             }
         }
