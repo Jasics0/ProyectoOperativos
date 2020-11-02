@@ -7,11 +7,11 @@ import java.util.Enumeration;
 
 public class Servidor{
 
-    public Servidor(){
+    public Servidor(int port){
         ServerSocket sServer;
         try {
             System.out.println("Servidor# Creando el socket en el puerto 2010...");
-            sServer = new ServerSocket(2010);
+            sServer = new ServerSocket(port);
             System.out.println("Servidor# Esperando conexiones...");
             Socket sConexion = sServer.accept();
             System.out.println("Servidor# Se conectó un cliente " + sConexion.getInetAddress());
