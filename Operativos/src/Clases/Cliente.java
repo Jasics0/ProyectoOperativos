@@ -18,7 +18,7 @@ public class Cliente extends Thread {
             Enumeration ee = n.getInetAddresses();
             while (ee.hasMoreElements()) {
                 i = (InetAddress) ee.nextElement();
-                if (i.getHostAddress().contains(Objects.requireNonNull(puertaEnlace()))) {
+                if (i.getHostAddress().contains(puertaEnlace())) {
                     return i;
                 }
             }
