@@ -27,7 +27,7 @@ public class Servidor {
                 mensajeE += sacarProcesos();
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } while (true);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -233,7 +233,7 @@ public class Servidor {
                 }
 
             }
-            Double libre = Double.parseDouble(aux[0]) - Double.parseDouble(aux[1]);
+            Double libre = Double.parseDouble(aux[1]);
             porcentaje = (Math.round((libre * 100) / Double.parseDouble(aux[0]))) + "";
             return porcentaje;
         } catch (IOException e) {
@@ -243,4 +243,3 @@ public class Servidor {
     }
 
 }
-
