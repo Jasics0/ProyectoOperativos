@@ -7,13 +7,6 @@ import java.util.Enumeration;
 
 public class Servidor {
 
-    public static Double memPercent(String x) throws IOException {
-        Double mem = 0.0;
-        x = sacarCPU();
-        System.out.println("Valor de lo del porcentaje Memoria by Henrro:"+x);
-        return mem;
-    }
-
     public Servidor(int port) {
         ServerSocket sServer;
         try {
@@ -30,9 +23,8 @@ public class Servidor {
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE = "Disco usado:" + sacarPorcentajeDf("sda") + " | Memoria Disponible:" + sacarPorcentajeMf("Mem") + " | CPU: " + sacarCPU() + "\n\n";
+                mensajeE =  sacarPorcentajeDf("sda") + "|" + sacarPorcentajeMf("Mem") + "|" + sacarCPU() + "\n\n";
                 mensajeE += sacarProcesos();
-                mensajeE += memPercent(sacarCPU());
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
                 Thread.sleep(1000);
