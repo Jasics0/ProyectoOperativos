@@ -1,5 +1,6 @@
-package Clases;
+package RemoteShell;
 
+import grafiqueishons.Graficas;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -10,14 +11,88 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-
 public class Cliente {
+
     private static final String DEFAULT_GATEWAY = "Default Gateway";
+    private static double nd, nm, nc;
+    private static String[] list;
+    private Socket cCliente;
+
+    public static double getNd() {
+        return nd;
+    }
+
+    public static void setNd(double nd) {
+        Cliente.nd = nd;
+    }
+
+    public static double getNm() {
+        return nm;
+    }
+
+    public static void setNm(double nm) {
+        Cliente.nm = nm;
+    }
+
+    public static double getNc() {
+        return nc;
+    }
+
+    public static void setNc(double nc) {
+        Cliente.nc = nc;
+    }
+
+    public static String[] getList() {
+        return list;
+    }
+
+    public static void setList(String[] list) {
+        Cliente.list = list;
+    }
+
+//    @Override
+//    public void run() {
+//
+//        //DataOutputStream salida;
+//        DataInputStream entrada = null;
+//        String mensaje = "";
+//        //String mensajeS = "";
+//        do {
+//            try {
+//                entrada = new DataInputStream(cCliente.getInputStream());
+//            } catch (IOException ex) {
+//                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            try {
+//                mensaje = entrada.readUTF();
+//            } catch (IOException ex) {
+//                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            list = mensaje.split("\r\n|\r|\n");
+//            sacarNumeros();
+//            System.out.print("Cliente# ");
+//            System.out.print(nd + " ");
+//            System.out.print(nm + " ");
+//            System.out.println(nc + " ");
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//        } while (true);
+//    }
+    public void sacarNumeros() {
+        String[] list2 = list[0].split(" ");
+        nd = Double.parseDouble(list2[1]);
+        nm = Double.parseDouble(list2[2]);
+        nc = Double.parseDouble(list2[3]);
+    }
 
     public Cliente(String ip, int port) {
-        Socket cCliente;
         try {
             Thread.sleep(1000);
+            Graficas g = new Graficas();
             cCliente = new Socket();
             System.out.println("Cliente# Estableciendo conexión con el servidor");
             cCliente = new Socket(InetAddress.getByName(ip), port);
@@ -29,9 +104,16 @@ public class Cliente {
             do {
                 entrada = new DataInputStream(cCliente.getInputStream());
                 mensaje = entrada.readUTF();
-                System.out.println("Cliente# " + mensaje);
-                Thread.sleep(1000);
-
+                list = mensaje.split("\r\n|\r|\n");
+                sacarNumeros();
+                System.out.print("Cliente# ");
+                System.out.print(nd + " ");
+                System.out.print(nm + " ");
+                System.out.println(nc + " ");
+                //g.actualizarCpu(nc);
+                //g.actualizarMem(nm);
+                g.actualizarDisk(nd);
+                Thread.sleep(500);
             } while (true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,7 +136,6 @@ public class Cliente {
         }
         return i;
     }
-
 
     public String puertaEnlace() {
         if (Desktop.isDesktopSupported()) {
@@ -79,5 +160,4 @@ public class Cliente {
         }
         return null;
     }
-
 }

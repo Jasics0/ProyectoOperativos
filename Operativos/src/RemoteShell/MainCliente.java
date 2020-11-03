@@ -1,6 +1,6 @@
-package Clases;
-import javax.swing.*;
+package RemoteShell;
 import java.net.SocketException;
+import javax.swing.JOptionPane;
 
 public class MainCliente {
 

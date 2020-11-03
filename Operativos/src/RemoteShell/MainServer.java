@@ -1,4 +1,4 @@
-package Clases;
+package RemoteShell;
 
 import javax.swing.*;
 import java.net.SocketException;
