@@ -7,6 +7,13 @@ import java.util.Enumeration;
 
 public class Servidor {
 
+    public static Double memPercent(String x) throws IOException {
+        Double mem = 0.0;
+        x = sacarCPU();
+        System.out.println("Valor de lo del porcentaje Memoria by Henrro:"+x);
+        return mem;
+    }
+
     public Servidor(int port) {
         ServerSocket sServer;
         try {
@@ -23,8 +30,9 @@ public class Servidor {
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE = "Disco usado:" + sacarPorcentajeDf("sda") + " | Memoria Disponible:" + sacarPorcentajeMf("Mem") +" | CPU: "+sacarCPU()+ "\n\n";
+                mensajeE = "Disco usado:" + sacarPorcentajeDf("sda") + " | Memoria Disponible:" + sacarPorcentajeMf("Mem") + " | CPU: " + sacarCPU() + "\n\n";
                 mensajeE += sacarProcesos();
+                mensajeE += memPercent(sacarCPU());
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
                 Thread.sleep(1000);
@@ -55,7 +63,6 @@ public class Servidor {
         return i;
     }
 
-
     private String puertaDeEnlace() throws IOException {
         ProcessBuilder b = new ProcessBuilder().command(("hostname -I").split(" "));
         Process p = b.start();
@@ -64,7 +71,7 @@ public class Servidor {
         return gateWay;
     }
 
-    public  String sacarProcesos() throws IOException {
+    public String sacarProcesos() throws IOException {
         String salida = "";
 
         ProcessBuilder b = new ProcessBuilder().command(("ps aux --sort pmem").split(" "));
@@ -81,19 +88,18 @@ public class Servidor {
                         administrador += salida.charAt(i);
                     }
 
-                    if (i==(salida.length()-1)){
+                    if (i == (salida.length() - 1)) {
                         break;
                     }
                     i++;
                 }
 
-                if (i==(salida.length()-1)){
+                if (i == (salida.length() - 1)) {
                     break;
                 }
 
-
                 while (salida.charAt(i) == ' ') {
-                    if (i==(salida.length()-1)){
+                    if (i == (salida.length() - 1)) {
                         break;
                     }
                     if (i2 <= 4) {
@@ -112,7 +118,7 @@ public class Servidor {
         return administrador;
     }
 
-    public String sacarCPU() throws IOException {
+    public static String sacarCPU() throws IOException {
         String salida = "";
 
         ProcessBuilder b = new ProcessBuilder().command(("ps aux --sort pmem").split(" "));
@@ -120,7 +126,7 @@ public class Servidor {
         BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String linea = "";
         double cpu = 0;
-        String cupS="";
+        String cupS = "";
         int i = 0, i2 = 0;
         entrada.readLine();
         while ((salida = entrada.readLine()) != null) {
@@ -131,19 +137,18 @@ public class Servidor {
                         cupS += salida.charAt(i);
                     }
 
-                    if (i==(salida.length()-1)){
+                    if (i == (salida.length() - 1)) {
                         break;
                     }
                     i++;
                 }
 
-                if (i==(salida.length()-1) || i2==3){
+                if (i == (salida.length() - 1) || i2 == 3) {
                     break;
                 }
 
-
                 while (salida.charAt(i) == ' ') {
-                    if (i==(salida.length()-1) || i2==3){
+                    if (i == (salida.length() - 1) || i2 == 3) {
                         break;
                     }
                     i++;
@@ -156,9 +161,9 @@ public class Servidor {
 
             }
             i = i2 = 0;
-            cupS="";
+            cupS = "";
         }
-        return cpu+"";
+        return cpu + "";
     }
 
     public int pid() {
@@ -200,7 +205,6 @@ public class Servidor {
             return "Error.";
         }
     }
-
 
     public String sacarPorcentajeMf(String palabra) {
         String salida = "";
