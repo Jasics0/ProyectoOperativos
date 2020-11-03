@@ -23,7 +23,7 @@ public class Servidor {
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE =  sacarPorcentajeDf("sda") + "|" + sacarPorcentajeMf("Mem") + "|" + sacarCPU() + "\n\n";
+                mensajeE = sacarPorcentajeDf("sda") + "|" + sacarPorcentajeMf("Mem") + "|" + sacarCPU() + "\n";
                 mensajeE += sacarProcesos();
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
@@ -187,7 +187,7 @@ public class Servidor {
             while (salida.charAt(i2) != ' ') {
                 i2--;
             }
-            for (int j = i2; j < (i + 1); j++) {
+            for (int j = i2; j < (i); j++) {
                 porcentaje += salida.charAt(j);
             }
 
@@ -235,7 +235,7 @@ public class Servidor {
             }
             Double libre = Double.parseDouble(aux[0]) - Double.parseDouble(aux[1]);
             porcentaje = (Math.round((libre * 100) / Double.parseDouble(aux[0]))) + "";
-            return porcentaje + "%";
+            return porcentaje;
         } catch (IOException e) {
             e.printStackTrace();
             return "Error.";

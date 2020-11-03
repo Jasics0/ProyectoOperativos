@@ -10,8 +10,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-
 public class Cliente {
+
     private static final String DEFAULT_GATEWAY = "Default Gateway";
 
     public Cliente(String ip, int port) {
@@ -29,7 +29,9 @@ public class Cliente {
             do {
                 entrada = new DataInputStream(cCliente.getInputStream());
                 mensaje = entrada.readUTF();
-                System.out.println("Cliente# " + mensaje);
+                String[] list = mensaje.split("\r\n|\r|\n");
+
+                System.out.println("Cliente# " + list[0]);
                 Thread.sleep(1000);
 
             } while (true);
@@ -54,7 +56,6 @@ public class Cliente {
         }
         return i;
     }
-
 
     public String puertaEnlace() {
         if (Desktop.isDesktopSupported()) {
