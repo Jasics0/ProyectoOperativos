@@ -1,19 +1,15 @@
 package RemoteShell;
 
-import grafiqueishons.Chart;
 import grafiqueishons.Graficas;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Cliente {
 

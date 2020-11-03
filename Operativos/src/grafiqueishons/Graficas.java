@@ -5,11 +5,13 @@
  */
 package grafiqueishons;
 
+
 import java.awt.Color;
 import java.util.List;
-import javafx.scene.chart.PieChart;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -21,7 +23,6 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 /**
- *
  * @author henry
  */
 public class Graficas {
@@ -45,7 +46,7 @@ public class Graficas {
     }
 
     Color[] colors = {Color.green, Color.red, Color.yellow
-    /* size of data set */
+            /* size of data set */
     };
     PieRenderer renderer = new PieRenderer(colors);
 
@@ -123,12 +124,12 @@ public class Graficas {
 
     public void actualizarDisk(Double x) {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("Disco Usado", new Double(x+""));
-        dataset.setValue("Disco Libre", new Double((100 - x)+""));
+        dataset.setValue("Disco Usado", new Double(x + ""));
+        dataset.setValue("Disco Libre", new Double((100 - x) + ""));
         JFreeChart chart = ChartFactory.createPieChart3D("Disco", dataset, true, true, false);
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
         renderer.setColor(plot, dataset);
-        plot.setLabelOutlinePaint(Color.BLACK);
+        plot.setLabelOutlinePaint(Color.yellow);
         ChartPanel panel = new ChartPanel(chart);
         jpdisk.setLayout(new java.awt.BorderLayout());
         jpdisk.add(panel);
@@ -141,8 +142,8 @@ public class Graficas {
         Graficas g = new Graficas();
         while (true) {
             i++;
-            //g.actualizarCpu(i);
-            //g.actualizarMem(i);
+            g.actualizarCpu(i);
+            g.actualizarMem(i);
             g.actualizarDisk(i);
             Thread.sleep(500);
         }
