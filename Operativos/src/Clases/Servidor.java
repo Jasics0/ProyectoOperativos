@@ -23,7 +23,7 @@ public class Servidor {
 //                entrada = new DataInputStream(sConexion.getInputStream());
 //                mensaje = entrada.readUTF();
 //                System.out.println("Servidor# Porcentaje de disco del cliente: " + mensaje);
-                mensajeE = sacarPorcentajeDf("sda") + "|" + sacarPorcentajeMf("Mem") + "|" + sacarCPU() + "\n";
+                mensajeE = sacarPorcentajeDf("sda") + " " + sacarPorcentajeMf("Mem") + " " + sacarCPU() + "\n";
                 mensajeE += sacarProcesos();
                 salida = new DataOutputStream(sConexion.getOutputStream());
                 salida.writeUTF(mensajeE);
@@ -243,3 +243,4 @@ public class Servidor {
     }
 
 }
+
